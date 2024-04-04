@@ -15,47 +15,62 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-2">
           {% block sidebar %}
-            <ul class="sidebar-nav">
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'books' %}">All books</a></li>
-              <li><a href="{% url 'authors' %}">All authors</a></li>
-            </ul>
-            <ul class="sidebar-nav">
-             {% if user.is_authenticated %}
-               <li>User: {{ user.get_username }}</li>
-               <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
-               <li>
-                 <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
-                   {% csrf_token %}
-                   <button type="submit" class="btn btn-link">Logout</button>
-                 </form>
-               </li>
-             {% else %}
-               <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
-             {% endif %}
-            </ul>
-            {% if user.is_staff %}
-            <hr>
-            <ul class="sidebar-nav">
-            <li>Staff</li>
-              <li><a href="{% url 'all-borrowed' %}">All borrowed</a></li>
-            {% if perms.catalog.add_author %}
-              <li><a href="{% url 'author-create' %}">Create author</a></li>
-            {% endif %}
-            {% if perms.catalog.add_book %}
-              <li><a href="{% url 'book-create' %}">Create book</a></li>
-            {% endif %}
-            {% if perms.catalog.add_bookinstance %}
-              <li><a href="{% url 'bookinstance-create' %}">Create BookInstance</a></li>
-            {% endif %}
-            </ul>
-            {% endif %}
+          <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="{% url 'index' %}">Local Library</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-          
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'books' %}">All books</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'authors' %}">All authors</a>
+                  </li>
+                  {% if user.is_authenticated %}
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'my-borrowed' %}">My borrowed</a>
+                  </li>
+                  <li class="nav-item">
+                    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-link">Logout</button>
+                    </form>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+                  </li>
+                  {% endif %}
+
+                  {% if user.is_staff %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all-borrowed' %}">All borrowed</a>
+                  </li>
+                  {% if perms.catalog.add_author %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'author-create' %}">Create author</a>
+                  </li>
+                  {% endif %}
+                  {% if perms.catalog.add_book %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'book-create' %}">Create book</a>
+                  </li>
+                  {% endif %}
+                  {% if perms.catalog.add_bookinstance %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'bookinstance-create' %}">Create bookinstance</a>
+                  </li>
+                  {% endif %}
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </nav>
           {% endblock %}
         </div>
         <div class="col-sm-10 ">{% block content %}{% endblock %}{% block pagination %}
@@ -75,8 +90,5 @@
                 </div>
             {% endif %}
           {% endblock %}
-        </div>
-      </div>
-    </div>
   </body>
 </html>
